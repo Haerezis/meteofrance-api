@@ -1,4 +1,4 @@
-class Meteofrance::Api::Rain
+class MeteofranceApi::Rain
   # position information of the rain forecast.
   attr_reader :position
   # update timestamp of the rain forecast.

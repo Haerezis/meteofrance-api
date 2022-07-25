@@ -1,8 +1,8 @@
 require "test_helper"
 
-class Meteofrance::ApiTest < Minitest::Test
+class MeteofranceApiTest < Minitest::Test
   def test_that_it_has_a_version_number
-    refute_nil ::Meteofrance::Api::VERSION
+    refute_nil ::MeteofranceApi::VERSION
   end
 
   def test_it_does_something_useful

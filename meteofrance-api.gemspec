@@ -1,11 +1,11 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "meteofrance/api/version"
+require "meteofrance_api/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "meteofrance-api"
-  spec.version       = Meteofrance::Api::VERSION
+  spec.version       = MeteofranceApi::VERSION
   spec.authors       = ["Thomas Kuntz"]
   spec.email         = ["thomaskuntz67@gmail.com"]
 
@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
 
     spec.metadata["homepage_uri"] = spec.homepage
     spec.metadata["source_code_uri"] = "https://github.com/Haerezis/meteofrance-api"
-    spec.metadata["changelog_uri"] = "https://github.com/Haerezis/meteofrance-api//blob/main/CHANGELOG.md"
+    spec.metadata["changelog_uri"] = "https://github.com/Haerezis/meteofrance-api/blob/main/CHANGELOG.md"
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."

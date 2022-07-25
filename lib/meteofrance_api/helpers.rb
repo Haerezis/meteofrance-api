@@ -1,6 +1,6 @@
-require "constants"
+require "meteofrance_api/constants"
 
-module Meteofrance::Api
+module MeteofranceApi::Helpers
   # Convert the color code in readable text.
   #
   # Args:
@@ -14,7 +14,7 @@ module Meteofrance::Api
     code,
     lang = :fr
   )
-    colors = Meteofrance::Api::ALERT_COLORS[lang] || Meteofrance::Api::ALERT_COLORS[:en]
+    colors = MeteofranceApi::ALERT_COLORS[lang] || MeteofranceApi::ALERT_COLORS[:en]
 
     colors[code]
   end
@@ -33,7 +33,7 @@ module Meteofrance::Api
     code,
     lang = :fr
   )
-    alert_types = Meteofrance::Api::ALERT_TYPES[lang] || Meteofrance::Api::ALERT_TYPES[:en]
+    alert_types = MeteofranceApi::ALERT_TYPES[lang] || MeteofranceApi::ALERT_TYPES[:en]
 
     alert_types[code]
   end
@@ -48,7 +48,7 @@ module Meteofrance::Api
   #      True if the department have an additional coastal bulletin. False otherwise.
   #  
   def is_coastal_department?(department_number)
-    Meteofrance::Api::COASTAL_DEPARTMENTS.include?(department_number)
+    MeteofranceApi::COASTAL_DEPARTMENTS.include?(department_number)
   end
 
 
@@ -63,7 +63,7 @@ module Meteofrance::Api
   #      True if a department is metropolitan France or Andorre.
   #  
   def is_department?(department_number)
-    Meteofrance::Api::VALID_DEPARTMENTS.include?(department_number)
+    MeteofranceApi::VALID_DEPARTMENTS.include?(department_number)
   end
 
   #  Compute distance in meters between to GPS coordinates using Harvesine formula.

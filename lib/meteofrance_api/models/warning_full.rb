@@ -5,7 +5,7 @@
 #
 # For coastal department two bulletins are avalaible corresponding to two different
 # domains.
-class WarningFull
+class MeteofranceApi::WarningFull
   # update time of the full bulletin.
   attr_reader :update_time
   # end of validty time of the full bulletin.
@@ -20,12 +20,12 @@ class WarningFull
   attr_reader :phenomenons_items
 
   def initialize(data)
-  @update_time = Time.at(data["update_time"]
-  @end_validity_time = Time.at(data["end_validity_time"])
-  @domain_id = data["domain_id"]
-  @color_max = data["color_max"]
-  @timelaps = data["timelaps"]
-  @phenomenons_items = data["phenomenons_items"]
+    @update_time = Time.at(data["update_time"])
+    @end_validity_time = Time.at(data["end_validity_time"])
+    @domain_id = data["domain_id"]
+    @color_max = data["color_max"]
+    @timelaps = data["timelaps"]
+    @phenomenons_items = data["phenomenons_items"]
   end
 
   # Merge the classical phenomenon bulletin with the coastal one.
@@ -36,7 +36,7 @@ class WarningFull
   # Args:
   #     coastal_phenomenoms: Full instance corresponding to the coastal weather
   #         alert bulletin.
-  def merge_with_coastal_phenomenons!(coastal_phenomenons):
+  def merge_with_coastal_phenomenons!(coastal_phenomenons)
     # TODO: Add consitency check
     # TODO: Check if other data need to be merged
 

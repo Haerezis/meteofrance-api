@@ -2,7 +2,7 @@
 #
 # For coastal department two bulletins are avalaible corresponding to two different
 # domains.
-class WarningCurrentPhenomenons
+class MeteofranceApi::WarningCurrentPhenomenons
   # update time of the phenomenoms.
   attr_reader :update_time
   # end of validty time of the phenomenoms.

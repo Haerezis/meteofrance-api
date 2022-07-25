@@ -1,9 +1,11 @@
 # Constants for Météo-France weather forecast python API.
-module Meteofrance::Api::Constants
+module MeteofranceApi::Constants
   API_URL = "https://webservice.meteofrance.com"
   API_TOKENS = [
-    "__Wj7dVSTjV9YGu1guveLyDq0g7S7TfTjaHBTPTpO0kj8__"  # noqa: S105,
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzRjdFOTVGOS04QjIxLTQwMDctOTFCQi0wQ0M3QjlBNTQxQzQiLCJjbGFzcyI6Im1vYmlsZSIsImlhdCI6MTYzNDg0NjM1Mi40NzU0MTE5fQ.F02c4y95-HqMsMbQeJ5Cx-qQ4LDJgaYwl47YsNvJM0E", # noqa: B951
+    # noqa: S105
+    "__Wj7dVSTjV9YGu1guveLyDq0g7S7TfTjaHBTPTpO0kj8__",
+    # noqa: B951
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzRjdFOTVGOS04QjIxLTQwMDctOTFCQi0wQ0M3QjlBNTQxQzQiLCJjbGFzcyI6Im1vYmlsZSIsImlhdCI6MTYzNDg0NjM1Mi40NzU0MTE5fQ.F02c4y95-HqMsMbQeJ5Cx-qQ4LDJgaYwl47YsNvJM0E",
   ]
 
   # enums used in all Warning classes. First indice is 0

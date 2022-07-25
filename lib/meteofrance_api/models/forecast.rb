@@ -1,4 +1,4 @@
-class Meteofrance::Api::Forecast
+class MeteofranceApi::Forecast
   # position information of the forecast. A Hash with metadata about the position of the forecast place.
   attr_reader :position
   # update Time of the forecast.

@@ -1,13 +1,16 @@
 require "faraday"
 
-class Meteofrance::Api::Client
-  def initialize(token = Meteofrance::Api::Constants::API_TOKENS.first)
-    @token = @token
+require "meteofrance_api/constants.rb"
+require "meteofrance_api/models"
+
+class MeteofranceApi::Client
+  def initialize(token = MeteofranceApi::Constants::API_TOKENS.first)
+    @token = token
   end
 
   def connection
     @conn ||= Faraday.new(
-      url: Meteofrance::Api::Constants::API_URL,
+      url: MeteofranceApi::Constants::API_URL,
       params: {token: @token },
     )
   end
@@ -44,9 +47,9 @@ class Meteofrance::Api::Client
 
     # Send the API resuest
     resp = connection.get("/v2/places", params)
-    data = JSON.parse(resp.text)
+    data = JSON.parse(resp.body)
 
-    places = data.map {|datum| Place.new(datum)}
+    places = data.map {|datum| MeteofranceApi::Place.new(datum)}
 
     places
   end
@@ -81,7 +84,7 @@ class Meteofrance::Api::Client
     })
 
 
-    return Forecast.new(JSON.parse(resp.text))
+    return MeteofranceApi::Forecast.new(JSON.parse(resp.body))
   end
 
   # Retrieve the weather forecast for a given Place instance.
@@ -131,7 +134,7 @@ class Meteofrance::Api::Client
       lon: longitude,
       lang: language
     })
-    return Rain.new(JSON.parse(resp.text))
+    return MeteofranceApi::Rain.new(JSON.parse(resp.body))
   end
 
   # Return the current weather phenomenons (or alerts) for a given domain.
@@ -160,16 +163,16 @@ class Meteofrance::Api::Client
     })
 
     # Create object with API response
-    phenomenons = WarningCurrentPhenomenons.new(JSON.parse(resp.text))
+    phenomenons = MeteofranceApi::WarningCurrentPhenomenons.new(JSON.parse(resp.body))
 
 
     # if user ask to have the coastal bulletin merged
     if with_costal_bulletin
-      if Meteofrance::Api::Constants::COASTAL_DEPARTMENTS.include?(domain)
+      if MeteofranceApi::Constants::COASTAL_DEPARTMENTS.include?(domain)
         resp = connection.get("/v2/warning/currentphenomenons", {
           domain: domain + 10,
         })
-        coastal_phenomenons = WarningCurrentPhenomenons.new(JSON.parse(resp.text))
+        coastal_phenomenons = MeteofranceApi::WarningCurrentPhenomenons.new(JSON.parse(resp.body))
 
         phenomenons.merge_with_coastal_phenomenons!(coastal_phenomenons)
       end
@@ -203,15 +206,15 @@ class Meteofrance::Api::Client
     })
 
     # Create object with API response
-    full_phenomenons = WarningFull.new(JSON.parse(resp.text))
+    full_phenomenons = MeteofranceApi::WarningFull.new(JSON.parse(resp.body))
 
     # if user ask to have the coastal bulletin merged
     if with_costal_bulletin
-      if Meteofrance::Api::Constants::COASTAL_DEPARTMENTS.include?(domain)
+      if MeteofranceApi::Constants::COASTAL_DEPARTMENTS.include?(domain)
         resp = connection.get("/v2/warning/full", {
           domain: domain + 10,
         })
-        coastal_full_phenomenons = WarningFull.new(JSON.parse(resp.text))
+        coastal_full_phenomenons = MeteofranceApi::WarningFull.new(JSON.parse(resp.body))
 
         full_phenomenons.merge_with_coastal_phenomenons!(coastal_full_phenomenons)
       end
@@ -232,7 +235,7 @@ class Meteofrance::Api::Client
   def get_warning_thumbnail(domain = "france")
     # Return directly the URL of the gif image
     [
-      "#{Meteofrance::Api::Constants::API_URL}/warning/thumbnail",
+      "#{MeteofranceApi::Constants::API_URL}/warning/thumbnail",
       "?",
       URI.encode_www_form({ domain: domain, token: @token }),
     ].join
@@ -258,10 +261,10 @@ class Meteofrance::Api::Client
       "/v2/report",
       params.merge(format: "txt")
     )
-    image_description = resp.text
+    image_description = resp.body
 
     image_url = [
-      "#{Meteofrance::Api::Constants::API_URL}/v2/report",
+      "#{MeteofranceApi::Constants::API_URL}/v2/report",
       "?",
       URI.encode_www_form(params.merge(format: "jpg", token: @token))
     ].join

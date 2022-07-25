@@ -1,4 +1,4 @@
-class Meteofrance::Api::Place
+class MeteofranceApi::Place
 
   # INSEE ID of the place.
   attr_reader :insee
