@@ -1,18 +1,26 @@
 class MeteofranceApi::Rain
-  # position information of the rain forecast.
-  attr_reader :position
-  # update timestamp of the rain forecast.
+  # update time of the rain forecast.
   attr_reader :updated_on
+  # position information of the rain forecast ([latitude, longitude]).
+  attr_reader :place_name
+  attr_reader :position
+  attr_reader :altitude
+  attr_reader :french_department
+  attr_reader :timezone
   # the rain forecast.
-  attr_reader :forecast
+  attr_reader :forecasts
   # quality of the rain forecast.
-  attr_reader :quality
+  attr_reader :confidence
 
   def initialize(data)
-    @position = data["position"]
-    @updated_on = Time.at(data["updated_on"]).utc
-    @forecast = data["forecast"]
-    @quality = data["quality"]
+    @updated_on = Time.at(data["updated_time"]).utc
+    @position = data["geometry"]["coordinates"]
+    @place_name = data["properties"]["name"]
+    @altitude = data["properties"]["altitude"]
+    @french_department = data["properties"]["french_department"]
+    @timezone = data["properties"]["timezone"]
+    @forecasts = data["properties"]["forecast"].map {|d| MeteofranceApi::Rain::Forecast.new(d)}
+    @confidence = data["properties"]["confidence"]
   end
 
   def to_locale_timezone(time)
@@ -27,13 +35,10 @@ class MeteofranceApi::Rain
   #    If no rain is expected in the following hour nil is returned.
   def next_rain_date(use_position_timezone)
     # search first cadran with rain
-    next_rain = forecast.find {|cadran| cadran["rain"] > 1}
+    next_rain = forecasts.find {|f| f.intensity > 1}
 
-    if next_rain
-      # transform next_rain timestamp into Time
-      next_rain = Time.at(next_rain["dt"]).utc
-    end
-
-    next_rain
+    next_rain&.time
   end
 end
+
+require "meteofrance_api/models/rain/forecast"

@@ -5,7 +5,7 @@
 #
 # For coastal department two bulletins are avalaible corresponding to two different
 # domains.
-class MeteofranceApi::WarningFull
+class MeteofranceApi::Warning::Full
   # update time of the full bulletin.
   attr_reader :update_time
   # end of validty time of the full bulletin.
@@ -16,8 +16,15 @@ class MeteofranceApi::WarningFull
   attr_reader :color_max
   # timelaps of each phenomenom for the domain. A list of Hash corresponding to the schedule of each phenomenons in the next 24 hours
   attr_reader :timelaps
-  # phenomenom list of the domain. List of Hash corresponding to the alert level for each phenomenons type
-  attr_reader :phenomenons_items
+  # phenomenom list of the domain.
+  attr_reader :phenomenons
+
+  attr_reader :advices
+  attr_reader :consequences
+  attr_reader :max_count_items
+  attr_reader :comments
+  attr_reader :text
+  attr_reader :text_avalanche
 
   def initialize(data)
     @update_time = Time.at(data["update_time"])
@@ -25,12 +32,19 @@ class MeteofranceApi::WarningFull
     @domain_id = data["domain_id"]
     @color_max = data["color_max"]
     @timelaps = data["timelaps"]
-    @phenomenons_items = data["phenomenons_items"]
+    @phenomenons = (data["phenomenons_items"] || []).map {|i| MeteofranceApi::Warning::Phenomenon.new(i)}
+
+    @advices = data["advices"]
+    @consequences = data["consequences"]
+    @max_count_items = data["max_count_items"]
+    @comments = data["comments"]
+    @text = data["text"]
+    @text["text_avalanche"]
   end
 
   # Merge the classical phenomenon bulletin with the coastal one.
 
-  # Extend the color_max, timelaps and phenomenons_items properties with the content
+  # Extend the color_max, timelaps and phenomenons properties with the content
   #     of the coastal weather alert bulletin.
 
   # Args:
@@ -45,7 +59,9 @@ class MeteofranceApi::WarningFull
     # Merge timelaps
     @timelaps += coastal_phenomenons.timelaps
 
-    # Merge phenomenons_items
-    @phenomenons_items += coastal_phenomenons.phenomenons_items
+    # Merge phenomenons
+    @phenomenons += coastal_phenomenons.phenomenons
   end
 end
+
+require "meteofrance_api/models/warning/phenomenon"

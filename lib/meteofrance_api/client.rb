@@ -134,6 +134,7 @@ class MeteofranceApi::Client
       lon: longitude,
       lang: language
     })
+
     return MeteofranceApi::Rain.new(JSON.parse(resp.body))
   end
 
@@ -163,16 +164,16 @@ class MeteofranceApi::Client
     })
 
     # Create object with API response
-    phenomenons = MeteofranceApi::WarningCurrentPhenomenons.new(JSON.parse(resp.body))
+    phenomenons = MeteofranceApi::Warning::Current.new(JSON.parse(resp.body))
 
 
     # if user ask to have the coastal bulletin merged
     if with_costal_bulletin
       if MeteofranceApi::Constants::COASTAL_DEPARTMENTS.include?(domain)
         resp = connection.get("/v2/warning/currentphenomenons", {
-          domain: domain + 10,
+          domain: domain + "10",
         })
-        coastal_phenomenons = MeteofranceApi::WarningCurrentPhenomenons.new(JSON.parse(resp.body))
+        coastal_phenomenons = MeteofranceApi::Warning::Current.new(JSON.parse(resp.body))
 
         phenomenons.merge_with_coastal_phenomenons!(coastal_phenomenons)
       end
@@ -206,7 +207,7 @@ class MeteofranceApi::Client
     })
 
     # Create object with API response
-    full_phenomenons = MeteofranceApi::WarningFull.new(JSON.parse(resp.body))
+    full_phenomenons = MeteofranceApi::Warning::Full.new(JSON.parse(resp.body))
 
     # if user ask to have the coastal bulletin merged
     if with_costal_bulletin
@@ -214,7 +215,7 @@ class MeteofranceApi::Client
         resp = connection.get("/v2/warning/full", {
           domain: domain + 10,
         })
-        coastal_full_phenomenons = MeteofranceApi::WarningFull.new(JSON.parse(resp.body))
+        coastal_full_phenomenons = MeteofranceApi::Warning::Full.new(JSON.parse(resp.body))
 
         full_phenomenons.merge_with_coastal_phenomenons!(coastal_full_phenomenons)
       end

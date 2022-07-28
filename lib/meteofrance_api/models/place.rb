@@ -10,10 +10,10 @@ class MeteofranceApi::Place
   attr_reader :longitude
   # country code of the place.
   attr_reader :country
-  # admin of the place.
-  attr_reader :admin
-  # admin2 of the place.
-  attr_reader :admin2
+  # Province/Region of the place.
+  attr_reader :province
+  # Province/Region's numerical code of the place.
+  attr_reader :province_code
   # postal code of the place.
   attr_reader :postal_code
 
@@ -23,8 +23,8 @@ class MeteofranceApi::Place
     @latitude = data["lat"]
     @longitude = data["lon"]
     @country = data["country"]
-    @admin = data["admin"]
-    @admin2 = data["admin2"]
+    @province = data["admin"]
+    @province_code = data["admin2"]
     @postal_code = data["postCode"]
   end
 
